@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.marswuerfel.game.objects.Dice;
+import com.marswuerfel.game.objects.DiceCard;
 import com.marswuerfel.game.utils.Constants;
-import com.marswuerfel.game.utils.DiceCard;
 
 public class Marswuerfel extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -19,19 +20,22 @@ public class Marswuerfel extends ApplicationAdapter {
 	Texture middle;
 	Texture tankDisplay;
 	Texture alienDisplay;
-	
+
 	BitmapFont font;
-	
+
 	DiceCard cow;
 	DiceCard human;
 	DiceCard alien;
 	DiceCard chicken;
 	DiceCard tank;
-	
+
 	Sound clickDown;
 	Sound clickUp;
-	
+
 	Sound cowSound;
+	Dice[] dices;
+
+	private String[] cardTextures;
 	public static final String TAG = "[Mauswürfel]";
 
 	@Override
@@ -56,28 +60,47 @@ public class Marswuerfel extends ApplicationAdapter {
 		chicken = new DiceCard("gfx/ChickenButtonUp.png",
 				"gfx/ChickenButtonDown.png", 660, 250);
 		chicken.setOrigin(0, 0);
-		
-		clickDown = Gdx.audio.newSound(Gdx.files.internal("sounds/clickDown.mp3"));
+
+		clickDown = Gdx.audio.newSound(Gdx.files
+				.internal("sounds/clickDown.mp3"));
 		clickUp = Gdx.audio.newSound(Gdx.files.internal("sounds/clickUp.mp3"));
 		cowSound = Gdx.audio.newSound(Gdx.files.internal("sounds/kuhmuh.mp3"));
-		
+
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
 		font.setScale(2f);
+		cardTextures = new String[] { "gfx/questionCard.png", "gfx/ChickenCard.png",
+				"gfx/HumanCard.png", "gfx/CowCard.png", "gfx/TankCard.png",
+				"gfx/AlienCard.png" };
+		dices = new Dice[13];
+		for (int i = 0; i < 4; i++) {
+			dices[i] = new Dice(cardTextures, (37 + 32 + (64 * i * 2.5f)),
+					(58 + (middle.getHeight() - 96)), 64, 64);
+		}
+		for (int i = 4; i < 9; i++) {
+			dices[i] = new Dice(cardTextures, (37 + (64 * (i - 4) * 2.15f)),
+					(58 + (middle.getHeight() / 2 - 32)), 64, 64);
+		}
+		for (int i = 9; i < 13; i++) {
+			dices[i] = new Dice(cardTextures,
+					(37 + 32 + (64 * (i - 9) * 2.5f)),
+					(58 + (middle.getHeight() / 3 - 96)), 64, 64);
+		}
 
 	}
 
 	public void update() {
+
 		if (alien.isPressed() && !alien.isPressedState()) {
 			alien.setPressed(true);
 			alien.setDownTexture();
 			alien.setScale(1.0f, 0.9f);
 			clickDown.play();
-			alien.setCount(alien.getCount()+1);
-		} 
-			
-		
-		if (!alien.isPressed() && alien.isPressedState()){
+			alien.setCount(alien.getCount() + 1);
+			Dice.swtichRunning();
+		}
+
+		if (!alien.isPressed() && alien.isPressedState()) {
 			alien.setPressed(false);
 			alien.setUpTexture();
 			alien.setScale(1.0f);
@@ -87,6 +110,14 @@ public class Marswuerfel extends ApplicationAdapter {
 		chicken.updateAsButton(clickDown);
 		cow.updateAsButton(cowSound);
 		human.updateAsButton(clickDown);
+		for (Dice dice : dices) {
+			if (Dice.running) {
+				dice.randomize(5);
+			}else{
+				dice.returnToBegin();
+			}
+		}
+		
 	}
 
 	@Override
@@ -116,11 +147,14 @@ public class Marswuerfel extends ApplicationAdapter {
 		font.draw(batch, "" + tank.getCount(), 667, 400);
 		font.draw(batch, "" + alien.getCount(), 742, 400);
 		font.draw(batch, "Hello Git!", 300, 300);
+		for (Dice dice : dices) {
+			batch.draw(dice, dice.getX(), dice.getY());
+		}
 		batch.end();
 	}
-	
+
 	@Override
-	public void dispose(){
+	public void dispose() {
 		batch.dispose();
 		background.dispose();
 		middle.dispose();
@@ -135,6 +169,9 @@ public class Marswuerfel extends ApplicationAdapter {
 		clickDown.dispose();
 		clickUp.dispose();
 		cowSound.dispose();
+		for (Dice dice : dices) {
+			dice.getTexture().dispose();
+		}
 	}
-	
+
 }
