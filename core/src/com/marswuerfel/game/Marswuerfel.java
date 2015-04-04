@@ -32,7 +32,7 @@ public class Marswuerfel extends ApplicationAdapter {
 	Sound clickUp;
 	
 	Sound cowSound;
-	public static final String TAG = "[Mauswürfel]";
+	public static final String TAG = "[MauswÃ¼rfel]";
 
 	@Override
 	public void create() {
@@ -115,7 +115,6 @@ public class Marswuerfel extends ApplicationAdapter {
 
 		font.draw(batch, "" + tank.getCount(), 667, 400);
 		font.draw(batch, "" + alien.getCount(), 742, 400);
-		font.draw(batch, "Hello Git!", 300, 300);
 		batch.end();
 	}
 	
