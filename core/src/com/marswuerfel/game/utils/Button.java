@@ -3,7 +3,6 @@ package com.marswuerfel.game.utils;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Rectangle;
 
 public class Button extends Sprite {
 	

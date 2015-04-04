@@ -1,9 +1,9 @@
-package com.mardwuerfel.game.client;
+package com.marswuerfel.game.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mardwuerfel.game.Marswuerfel;
+import com.marswuerfel.game.Marswuerfel;
 
 public class HtmlLauncher extends GwtApplication {
 

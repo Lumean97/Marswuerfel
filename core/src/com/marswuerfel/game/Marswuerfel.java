@@ -1,5 +1,6 @@
 package com.marswuerfel.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -35,7 +36,7 @@ public class Marswuerfel extends ApplicationAdapter {
 
 	@Override
 	public void create() {
-		Gdx.app.setLogLevel(Gdx.app.LOG_DEBUG);
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		Gdx.input.setInputProcessor(Constants.IN);
 		middle = new Texture("gfx/middleteil.png");
 		background = new Texture("gfx/background.jpg");
@@ -114,30 +115,12 @@ public class Marswuerfel extends ApplicationAdapter {
 
 		font.draw(batch, "" + tank.getCount(), 667, 400);
 		font.draw(batch, "" + alien.getCount(), 742, 400);
+		font.draw(batch, "Hello Git!", 300, 300);
 		batch.end();
 	}
 	
 	@Override
 	public void dispose(){
-//		SpriteBatch batch;
-//
-//		Texture background;
-//		Texture middle;
-//		Texture tankDisplay;
-//		Texture alienDisplay;
-//		
-//		BitmapFont font;
-//		
-//		DiceCard cow;
-//		DiceCard human;
-//		DiceCard alien;
-//		DiceCard chicken;
-//		DiceCard tank;
-//		
-//		Sound clickDown;
-//		Sound clickUp;
-//		
-//		Sound cowSound;
 		batch.dispose();
 		background.dispose();
 		middle.dispose();
