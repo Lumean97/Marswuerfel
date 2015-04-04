@@ -1,0 +1,14 @@
+Brainstorming for building the game
+
+
+Benötigte Objekte:
+Player
+Würfel(13) (64x64)
+
+Regeln:
+Jeder Spieler hat immer einen Zug. Er würfelt alle 13 Würfel. Kuh/Huhn/Mensch = 1 Punkt; 
+Panzer = Gegner der ausgeglichen werden muss; Todeslaser gleicht Panzer aus.
+
+Es müssen 25 Punkte erreicht werden
+
+Hat ein Spieler am Ende einer Runde keine Punkte mehr, verliert er.
