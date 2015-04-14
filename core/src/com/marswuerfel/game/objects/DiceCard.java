@@ -12,11 +12,13 @@ public class DiceCard extends Button {
 	
 
 	private int count = 0;
+	private int indexID = 0;
 
-	public DiceCard(String upTexture, String downTexture, float x, float y) {
+	public DiceCard(String upTexture, String downTexture, float x, float y, int indexID) {
 		super(upTexture, x, y);
 		this.upTexture = new Texture(upTexture);
 		this.downTexture = new Texture(downTexture);
+		this.indexID = indexID;
 	}
 
 	public DiceCard(String upTexture, String downTexture, float x, float y,
@@ -49,20 +51,26 @@ public class DiceCard extends Button {
 			return;
 		checkPressed();
 		if (isPressedState() && !Dice.running) {
-			setDownTexture();
-			setScale(1.0f, 0.9f);
-			sound.play();
 			
+			boolean changed = false;
 			for(Dice dice : dices){
-				if(dice.getIndexID()==Dice.CHICKEN){
+				if(dice.getIndexID()==indexID || (indexID==5 && dice.getIndexID()==6)){
 					dice.setPressed(true);
 					dice.setSpinable(false);
 					dice.setFinalTexture(dice.getTexture());
 					setCount(count+1);
-					
+					changed = true;
 				}
 			}
+			if(changed){
+			setDownTexture();
+			setScale(1.0f, 0.9f);
 			Dice.running = true;
+			sound.play();
+			}else{
+				setPressed(false);
+			}
+			
 			
 		}
 	}

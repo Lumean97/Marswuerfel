@@ -16,7 +16,7 @@ public class Dice extends Button{
 	public static final int TANK = 4;
 	public static final int ALIEN = 5;
 	
-	private int indexID = -1;
+	private int indexID = 0;
 	
 	private Texture finalTexture;
 	public static final String TAG = "[Dice]";

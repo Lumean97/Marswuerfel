@@ -14,193 +14,64 @@ import com.marswuerfel.game.objects.DiceCard;
 import com.marswuerfel.game.utils.Constants;
 
 public class Marswuerfel extends ApplicationAdapter {
-	SpriteBatch batch;
 
-	Texture background;
-	Texture middle;
-	Texture tankDisplay;
-	Texture alienDisplay;
-	Texture chickenDisplay;
-	Texture cowDisplay;
-	Texture humanDisplay;
-
-	BitmapFont font;
-
-	DiceCard cow;
-	DiceCard human;
-	DiceCard alien;
-	DiceCard chicken;
-	DiceCard tank;
-
-	Sound clickDown;
-	Sound clickUp;
-
-	Sound cowSound;
-	Dice[] dices;
-
-	private String[] cardTextures;
 	public static final String TAG = "[Marswuerfel]";
-
+	public static SpriteBatch batch;
+	private int lastIndex = 0;
+	public static int playerIndex = 0;
+	private int maxPlayers = 5;
+	Player[] players;
 	@Override
 	public void create() {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		Gdx.input.setInputProcessor(Constants.IN);
-		middle = new Texture("gfx/middleteil.png");
-		background = new Texture("gfx/background.jpg");
-		batch = new SpriteBatch();
-		tankDisplay = new Texture("gfx/TankDisplay.png");
-		alienDisplay = new Texture("gfx/AlienDisplay.png");
-		chickenDisplay = new Texture("gfx/ChickenDisplay.png");
-		cowDisplay = new Texture("gfx/cowDisplay.png");
-		humanDisplay = new Texture("gfx/humanDisplay.png");
-		tank = new DiceCard("gfx/Tank.png", "gfx/Tank.png", 0, 0);
-		cow = new DiceCard("gfx/CowButtonUp.png", "gfx/CowButtonDown.png", 660,
-				175);
-		cow.setOrigin(0, 0);
-		human = new DiceCard("gfx/HumanButtonUp.png",
-				"gfx/HumanButtonDown.png", 735, 250);
-		human.setOrigin(0, 0);
-		alien = new DiceCard("gfx/AlienButtonUp.png",
-				"gfx/AlienButtonDown.png", 735, 175);
-		alien.setOrigin(0, 0);
-		chicken = new DiceCard("gfx/ChickenButtonUp.png",
-				"gfx/ChickenButtonDown.png", 660, 250);
-		chicken.setOrigin(0, 0);
-
-		clickDown = Gdx.audio.newSound(Gdx.files
-				.internal("sounds/clickDown.mp3"));
-		clickUp = Gdx.audio.newSound(Gdx.files.internal("sounds/clickUp.mp3"));
-		cowSound = Gdx.audio.newSound(Gdx.files.internal("sounds/kuhmuh.mp3"));
-
-		font = new BitmapFont();
-		font.setColor(Color.BLACK);
-		font.setScale(2f);
-		cardTextures = new String[] { "gfx/questionCard.png",
-				"gfx/ChickenCard.png", "gfx/HumanCard.png", "gfx/CowCard.png",
-				"gfx/TankCard.png", "gfx/AlienCard.png" };
-		dices = new Dice[13];
-		for (int i = 0; i < 4; i++) {
-			dices[i] = new Dice(cardTextures, (37 + 32 + (64 * i * 2.5f)),
-					(58 + (middle.getHeight() - 96)), 64, 64);
-		}
-		for (int i = 4; i < 9; i++) {
-			dices[i] = new Dice(cardTextures, (37 + (64 * (i - 4) * 2.15f)),
-					(58 + (middle.getHeight() / 2 - 32)), 64, 64);
-		}
-		for (int i = 9; i < 13; i++) {
-			dices[i] = new Dice(cardTextures,
-					(37 + 32 + (64 * (i - 9) * 2.5f)),
-					(58 + (middle.getHeight() / 3 - 96)), 64, 64);
-		}
-
+	 players = new Player[maxPlayers];
+	 for(int i = 0; i<players.length; i++){
+		 players[i] = new Player();
+	 }
+	 batch = new SpriteBatch();
+	 players[0].start();
 	}
 
-	public void update() {
 
-		if (alien.isPressed() && !alien.isPressedState()) {
-			alien.setPressed(true);
-			alien.setDownTexture();
-			alien.setScale(1.0f, 0.9f);
-			clickDown.play();
-			alien.setCount(alien.getCount() + 1);
-			Dice.swtichRunning();
-		}
 
-		if (!alien.isPressed() && alien.isPressedState()) {
-			alien.setPressed(false);
-			alien.setUpTexture();
-			alien.setScale(1.0f);
-			clickUp.play();
-		}
-		
-		
-			chicken.updateAsButton(clickDown, dices);
-			
-	
-
-		
-		cow.updateAsButton(cowSound, dices);
-		human.updateAsButton(clickDown, dices);
-		dices[5].setFinalTexture(Dice.HUMAN);
-		for (Dice dice : dices) {
-			if (Dice.running && dice.isSpinable()) {
-
-				dice.randomize(5);
-			} else if (!Dice.running) {
-				if(dice.getIndexID()==Dice.TANK && dice.isSpinable()){
-					tank.setCount(tank.getCount() +1);
-					dice.setPressed(true);
-					dice.setSpinable(false);
-					dice.setFinalTexture(dice.getTexture());
-				}
-			}  else {
-				// dice.returnToBegin();
+	public void checkWinner(){
+		for(Player p : players){
+			if(p.getPoints()>=25){
+				System.out.println("Winner!");
 			}
 		}
-
 	}
-
+	
 	@Override
 	public void render() {
-		update();
-		Gdx.gl.glClearColor(0, 0, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(background, 0, 0);
-		batch.draw(middle, 37, 58);
-		batch.draw(tankDisplay, 660, 350);
-		batch.draw(alienDisplay, 735, 350);
-		batch.draw(chickenDisplay, 60, 410);
-		batch.draw(cowDisplay, 280, 410);
-		batch.draw(humanDisplay, 500, 410);
-		batch.draw(cow, cow.getX(), cow.getY(), cow.getOriginX(),
-				cow.getOriginY(), cow.getWidth(), cow.getHeight(),
-				cow.getScaleX(), cow.getScaleY(), cow.getRotation());
-		batch.draw(human, human.getX(), human.getY(), human.getOriginX(),
-				human.getOriginY(), human.getWidth(), human.getHeight(),
-				human.getScaleX(), human.getScaleY(), human.getRotation());
-		batch.draw(alien, alien.getX(), alien.getY(), alien.getOriginX(),
-				alien.getOriginY(), alien.getWidth(), alien.getHeight(),
-				alien.getScaleX(), alien.getScaleY(), alien.getRotation());
-		batch.draw(chicken, chicken.getX(), chicken.getY(),
-				chicken.getOriginX(), chicken.getOriginY(), chicken.getWidth(),
-				chicken.getHeight(), chicken.getScaleX(), chicken.getScaleY(),
-				chicken.getRotation());
-		font.draw(batch, "" + chicken.getCount(), 130, 455);
-		font.draw(batch, "" + cow.getCount(), 350, 455);
-		font.draw(batch, "" + human.getCount(), 570, 455);
-		font.draw(batch, "" + tank.getCount(), 667, 400);
-		font.draw(batch, "" + alien.getCount(), 742, 400);
-		for (Dice dice : dices) {
-			batch.draw(dice, dice.getX(), dice.getY());
-			if (!dice.isSpinable()) {
-				batch.draw(dice.getFinalTexture(), dice.getX(), dice.getY());
-				batch.draw(Dice.blackOverlay, dice.getX(), dice.getY());
-
-			}
+	if(playerIndex>lastIndex){
+		if(playerIndex>maxPlayers-1){
+			playerIndex = 0;
+			checkWinner();
 		}
-		batch.end();
+		lastIndex = playerIndex;
+		checkLoose(0);
+		players[playerIndex].start();
+		
+	}
+	players[playerIndex].render();
 	}
 
 	@Override
 	public void dispose() {
 		batch.dispose();
-		background.dispose();
-		middle.dispose();
-		tankDisplay.dispose();
-		alienDisplay.dispose();
-		font.dispose();
-		cow.dispose();
-		human.dispose();
-		alien.dispose();
-		chicken.dispose();
-		tank.dispose();
-		clickDown.dispose();
-		clickUp.dispose();
-		cowSound.dispose();
-		for (Dice dice : dices) {
-			dice.getTexture().dispose();
+		
+	}
+	
+	public void checkLoose(int trys){
+		if(trys>maxPlayers)gameOver();
+		if(players[playerIndex].isLost()){
+			playerIndex++;
+			checkLoose(trys++);
 		}
+	}
+	
+	public void gameOver(){
+		
 	}
 
 }
