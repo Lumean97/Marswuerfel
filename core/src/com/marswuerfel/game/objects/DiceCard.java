@@ -44,14 +44,26 @@ public class DiceCard extends Button {
 		}
 	}
 
-	public void updateAsButton(Sound sound) {
-		if (isPressedState())
+	public void updateAsButton(Sound sound, Dice[] dices) {
+		if (isPressedState() || Dice.running)
 			return;
 		checkPressed();
-		if (isPressedState()) {
+		if (isPressedState() && !Dice.running) {
 			setDownTexture();
 			setScale(1.0f, 0.9f);
 			sound.play();
+			
+			for(Dice dice : dices){
+				if(dice.getIndexID()==Dice.CHICKEN){
+					dice.setPressed(true);
+					dice.setSpinable(false);
+					dice.setFinalTexture(dice.getTexture());
+					setCount(count+1);
+					
+				}
+			}
+			Dice.running = true;
+			
 		}
 	}
 

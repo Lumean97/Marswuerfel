@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Button extends Sprite {
 	
-	protected InputHandler in;
+	public static final InputHandler in = Constants.IN;
 	private boolean pressed;
 	@SuppressWarnings("unused")
 	private static final String TAG = "[Button] ";
@@ -21,7 +21,6 @@ public class Button extends Sprite {
 	 */
 	public Button(String texturePath, float x, float y, float width, float height) {
 		super(new Texture(texturePath));
-		this.in = Constants.IN;
 		setBounds(x, y, width, height);
 		setOrigin(getWidth()/2, getHeight()/2);
 		
@@ -29,12 +28,16 @@ public class Button extends Sprite {
 	
 	public Button(String texturePath, float x, float y){
 		super(new Texture(texturePath));
-		this.in = Constants.IN;
 		setBounds(x, y, getWidth(), getHeight());
 		setOrigin(getWidth()/2, getHeight()/2);
 	}
 
+	public Button(Texture texture) {
+		super(texture);
+	}
+
 	public boolean isPressed() {
+		
 		int screenX = in.getTouchX();
 		int screenY = in.getTouchY();
 		if (screenX>=getX() && screenX <= getX() + getWidth() && screenY >= getY() && screenY <= getY() + getHeight()

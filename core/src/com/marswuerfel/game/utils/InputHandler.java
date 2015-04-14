@@ -4,8 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor{
-	private int touchX;
-	private int touchY;
+	private int touchX = 0;
+	private int touchY = 0;
 	private boolean touched;
 	
 	private int mousePosX;

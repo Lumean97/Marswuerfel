@@ -20,6 +20,9 @@ public class Marswuerfel extends ApplicationAdapter {
 	Texture middle;
 	Texture tankDisplay;
 	Texture alienDisplay;
+	Texture chickenDisplay;
+	Texture cowDisplay;
+	Texture humanDisplay;
 
 	BitmapFont font;
 
@@ -36,7 +39,7 @@ public class Marswuerfel extends ApplicationAdapter {
 	Dice[] dices;
 
 	private String[] cardTextures;
-	public static final String TAG = "[Mauswürfel]";
+	public static final String TAG = "[Marswuerfel]";
 
 	@Override
 	public void create() {
@@ -47,6 +50,9 @@ public class Marswuerfel extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		tankDisplay = new Texture("gfx/TankDisplay.png");
 		alienDisplay = new Texture("gfx/AlienDisplay.png");
+		chickenDisplay = new Texture("gfx/ChickenDisplay.png");
+		cowDisplay = new Texture("gfx/cowDisplay.png");
+		humanDisplay = new Texture("gfx/humanDisplay.png");
 		tank = new DiceCard("gfx/Tank.png", "gfx/Tank.png", 0, 0);
 		cow = new DiceCard("gfx/CowButtonUp.png", "gfx/CowButtonDown.png", 660,
 				175);
@@ -69,9 +75,9 @@ public class Marswuerfel extends ApplicationAdapter {
 		font = new BitmapFont();
 		font.setColor(Color.BLACK);
 		font.setScale(2f);
-		cardTextures = new String[] { "gfx/questionCard.png", "gfx/ChickenCard.png",
-				"gfx/HumanCard.png", "gfx/CowCard.png", "gfx/TankCard.png",
-				"gfx/AlienCard.png" };
+		cardTextures = new String[] { "gfx/questionCard.png",
+				"gfx/ChickenCard.png", "gfx/HumanCard.png", "gfx/CowCard.png",
+				"gfx/TankCard.png", "gfx/AlienCard.png" };
 		dices = new Dice[13];
 		for (int i = 0; i < 4; i++) {
 			dices[i] = new Dice(cardTextures, (37 + 32 + (64 * i * 2.5f)),
@@ -106,18 +112,32 @@ public class Marswuerfel extends ApplicationAdapter {
 			alien.setScale(1.0f);
 			clickUp.play();
 		}
+		
+		
+			chicken.updateAsButton(clickDown, dices);
+			
+	
 
-		chicken.updateAsButton(clickDown);
-		cow.updateAsButton(cowSound);
-		human.updateAsButton(clickDown);
+		
+		cow.updateAsButton(cowSound, dices);
+		human.updateAsButton(clickDown, dices);
+		dices[5].setFinalTexture(Dice.HUMAN);
 		for (Dice dice : dices) {
-			if (Dice.running) {
+			if (Dice.running && dice.isSpinable()) {
+
 				dice.randomize(5);
-			}else{
-				dice.returnToBegin();
+			} else if (!Dice.running) {
+				if(dice.getIndexID()==Dice.TANK && dice.isSpinable()){
+					tank.setCount(tank.getCount() +1);
+					dice.setPressed(true);
+					dice.setSpinable(false);
+					dice.setFinalTexture(dice.getTexture());
+				}
+			}  else {
+				// dice.returnToBegin();
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -130,6 +150,9 @@ public class Marswuerfel extends ApplicationAdapter {
 		batch.draw(middle, 37, 58);
 		batch.draw(tankDisplay, 660, 350);
 		batch.draw(alienDisplay, 735, 350);
+		batch.draw(chickenDisplay, 60, 410);
+		batch.draw(cowDisplay, 280, 410);
+		batch.draw(humanDisplay, 500, 410);
 		batch.draw(cow, cow.getX(), cow.getY(), cow.getOriginX(),
 				cow.getOriginY(), cow.getWidth(), cow.getHeight(),
 				cow.getScaleX(), cow.getScaleY(), cow.getRotation());
@@ -143,12 +166,18 @@ public class Marswuerfel extends ApplicationAdapter {
 				chicken.getOriginX(), chicken.getOriginY(), chicken.getWidth(),
 				chicken.getHeight(), chicken.getScaleX(), chicken.getScaleY(),
 				chicken.getRotation());
-
+		font.draw(batch, "" + chicken.getCount(), 130, 455);
+		font.draw(batch, "" + cow.getCount(), 350, 455);
+		font.draw(batch, "" + human.getCount(), 570, 455);
 		font.draw(batch, "" + tank.getCount(), 667, 400);
 		font.draw(batch, "" + alien.getCount(), 742, 400);
-		font.draw(batch, "Hello Git!", 300, 300);
 		for (Dice dice : dices) {
 			batch.draw(dice, dice.getX(), dice.getY());
+			if (!dice.isSpinable()) {
+				batch.draw(dice.getFinalTexture(), dice.getX(), dice.getY());
+				batch.draw(Dice.blackOverlay, dice.getX(), dice.getY());
+
+			}
 		}
 		batch.end();
 	}
