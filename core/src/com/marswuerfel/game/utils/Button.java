@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public class Button extends Sprite {
 	
-	public static final InputHandler in = Constants.IN;
+	public static  InputHandler in = Constants.IN;
 	private boolean pressed;
 	@SuppressWarnings("unused")
 	private static final String TAG = "[Button] ";

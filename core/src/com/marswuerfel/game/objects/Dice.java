@@ -26,6 +26,7 @@ public class Dice extends Button{
 	private long lastRandom;
 	private static Texture questionCard = new Texture("gfx/questionCard.png");
 	private boolean spinable = true;
+	public static boolean chosen = true;
 	public Dice(String[] textures, float x, float y, float width, float height){
 		super(new Texture(textures[0]));
 		this.textures = new Texture[textures.length];
@@ -53,6 +54,7 @@ public class Dice extends Button{
 	}
 	public static void swtichRunning() {
 		if (running) {
+			chosen = false;
 			running = false;
 			return;
 		}

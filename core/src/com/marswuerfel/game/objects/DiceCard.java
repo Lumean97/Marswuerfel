@@ -69,6 +69,7 @@ public class DiceCard extends Button {
 			setDownTexture();
 			setScale(1.0f, 0.9f);
 			Dice.running = true;
+			Dice.chosen = true;
 			sound.play();
 			}else{
 				setPressed(false);
@@ -95,5 +96,7 @@ public class DiceCard extends Button {
 		upTexture.dispose();
 		downTexture.dispose();
 	}
+	
+	
 
 }

@@ -1,17 +1,23 @@
 package com.marswuerfel.game;
 
+import com.marswuerfel.game.Screens.LifeCycle;
+import com.marswuerfel.game.utils.Constants;
+
 public class Player {
 	private LifeCycle game;
 	private int points = 0;
 	boolean lost = false;
+	public static final String TAG = "[Player]";
+	private boolean won = false;
 	public Player(){
 		
 	}
 	public void start(){
 		game = new LifeCycle(this);
+		Constants.GAME.setScreen(game);
 	}
-	public void render(){
-		game.render();
+	public void render(float delta){
+		game.render(delta);
 	}
 	
 	public LifeCycle getCurrentLifeCycle(){
@@ -20,7 +26,7 @@ public class Player {
 	
 	public void stop(int p){
 		points+=p;
-		Marswuerfel.playerIndex++;
+		Constants.GAME.playerIndex++;
 		System.out.println(points);
 		game.dispose();
 	}
@@ -37,5 +43,13 @@ public class Player {
 	public boolean isLost(){
 		
 		return lost;
+	}
+	
+	public void setWon(boolean won){
+		this.won = won;
+	}
+	
+	public boolean hadWon(){
+		return won;
 	}
 }
