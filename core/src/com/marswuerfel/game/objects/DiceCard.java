@@ -9,12 +9,11 @@ public class DiceCard extends Button {
 	Texture upTexture;
 	Texture downTexture;
 
-	
-
 	private int count = 0;
 	private int indexID = 0;
 
-	public DiceCard(String upTexture, String downTexture, float x, float y, int indexID) {
+	public DiceCard(String upTexture, String downTexture, float x, float y,
+			int indexID) {
 		super(upTexture, x, y);
 		this.upTexture = new Texture(upTexture);
 		this.downTexture = new Texture(downTexture);
@@ -55,10 +54,14 @@ public class DiceCard extends Button {
 			boolean changed = false;
 			for(Dice dice : dices){
 				if(dice.getIndexID()==indexID || (indexID==5 && dice.getIndexID()==6)){
+					if(dice.isSpinable()){
+						setCount(count+1);
+					}
+					
 					dice.setPressed(true);
 					dice.setSpinable(false);
 					dice.setFinalTexture(dice.getTexture());
-					setCount(count+1);
+					
 					changed = true;
 				}
 			}
@@ -92,7 +95,5 @@ public class DiceCard extends Button {
 		upTexture.dispose();
 		downTexture.dispose();
 	}
-
-	
 
 }
