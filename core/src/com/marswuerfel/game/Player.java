@@ -9,47 +9,52 @@ public class Player {
 	boolean lost = false;
 	public static final String TAG = "[Player]";
 	private boolean won = false;
-	public Player(){
-		
+
+	public Player() {
+
 	}
-	public void start(){
+
+	public void start() {
 		game = new LifeCycle(this);
 		Constants.GAME.setScreen(game);
 	}
-	public void render(float delta){
+
+	public void render(float delta) {
 		game.render(delta);
 	}
-	
-	public LifeCycle getCurrentLifeCycle(){
+
+	public LifeCycle getCurrentLifeCycle() {
 		return game;
 	}
-	
-	public void stop(int p){
-		points+=p;
+
+	public void stop(int p) {
+		points += p;
 		Constants.GAME.playerIndex++;
-		System.out.println(points);
 		game.dispose();
 	}
-	
-	public int getPoints(){
+
+	public int getPoints() {
 		return points;
 	}
-	
-	public void loose(){
+
+	public void loose() {
 		lost = true;
-		System.out.println("lost");
 	}
-	
-	public boolean isLost(){
-		
+
+	public boolean isLost() {
+
 		return lost;
 	}
-	
-	public void setWon(boolean won){
+
+	public void setWon(boolean won) {
 		this.won = won;
 	}
-	
-	public boolean hadWon(){
+
+	public boolean hadWon() {
 		return won;
+	}
+	
+	public void dispose(){
+		
 	}
 }

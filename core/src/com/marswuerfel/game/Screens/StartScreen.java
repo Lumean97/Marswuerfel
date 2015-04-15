@@ -5,8 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.marswuerfel.game.objects.Dice;
 import com.marswuerfel.game.objects.DiceCard;
 import com.marswuerfel.game.utils.Button;
 import com.marswuerfel.game.utils.Constants;
@@ -23,9 +21,10 @@ public class StartScreen implements Screen {
 	public void show() {
 		logo = new Texture("gfx/StartLogo.png");
 		playButton = new Button("gfx/playButton.png",
-				Constants.GAME_WIDTH / 2 -62, 350);
+				Constants.GAME_WIDTH / 2 - 62, 350);
 		add = new DiceCard("gfx/addUp.png", "gfx/addDown.png", 100, 100, -1);
-		remove = new DiceCard("gfx/removeUp.png", "gfx/removeDown.png", 300, 300, -1);
+		remove = new DiceCard("gfx/removeUp.png", "gfx/removeDown.png", 300,
+				300, -1);
 		clickDown = Gdx.audio.newSound(Gdx.files
 				.internal("sounds/clickDown.mp3"));
 		clickUp = Gdx.audio.newSound(Gdx.files.internal("sounds/clickUp.mp3"));
@@ -41,7 +40,8 @@ public class StartScreen implements Screen {
 
 			clickDown.play();
 			Constants.GAME.maxPlayers++;
-			if(Constants.GAME.maxPlayers>25)Constants.GAME.maxPlayers=25;
+			if (Constants.GAME.maxPlayers > 25)
+				Constants.GAME.maxPlayers = 25;
 		}
 
 		if (!add.isPressed() && add.isPressedState()) {
@@ -53,7 +53,8 @@ public class StartScreen implements Screen {
 			remove.setPressed(true);
 			remove.setDownTexture();
 			Constants.GAME.maxPlayers--;
-			if(Constants.GAME.maxPlayers<2)Constants.GAME.maxPlayers=2;
+			if (Constants.GAME.maxPlayers < 2)
+				Constants.GAME.maxPlayers = 2;
 			clickDown.play();
 		}
 
@@ -63,10 +64,10 @@ public class StartScreen implements Screen {
 			clickUp.play();
 		}
 
-
-		if (playButton.isPressed()){
+		if (playButton.isPressed()) {
 			dispose();
-			clickDown.play();}
+			clickDown.play();
+		}
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Constants.GAME.batch.begin();
@@ -75,33 +76,30 @@ public class StartScreen implements Screen {
 				playButton.getY());
 		Constants.GAME.batch.draw(add, add.getX(), add.getY());
 		Constants.GAME.batch.draw(remove, remove.getX(), remove.getY());
-		Constants.GAME.font.setColor(1,1, 1, 1);
-		Constants.GAME.font.draw(Constants.GAME.batch, "Players: " + Constants.GAME.maxPlayers, 610, 390);
+		Constants.GAME.font.setColor(1, 1, 1, 1);
+		Constants.GAME.font.draw(Constants.GAME.batch, "Players: "
+				+ Constants.GAME.maxPlayers, 610, 390);
 		Constants.GAME.font.setColor(0, 0, 0, 1);
 		Constants.GAME.batch.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -111,8 +109,11 @@ public class StartScreen implements Screen {
 		logo.dispose();
 		playButton.setPressed(false);
 		playButton.dispose();
-		System.out.println("disposed!");
-		
+		add.dispose();
+		remove.dispose();
+		clickDown.dispose();
+		clickUp.dispose();
+
 	}
 
 }

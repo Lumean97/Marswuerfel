@@ -3,17 +3,16 @@ package com.marswuerfel.game.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 
-public class InputHandler implements InputProcessor{
+public class InputHandler implements InputProcessor {
 	private int touchX = 0;
 	private int touchY = 0;
 	private boolean touched;
-	
+
 	private int mousePosX;
 	private int mousePosY;
-	
+
 	public static final String TAG = "[InputHandler]";
-	
-	
+
 	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
@@ -34,8 +33,9 @@ public class InputHandler implements InputProcessor{
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		touchX = screenX*Constants.GAME_WIDTH/Gdx.graphics.getWidth();
-		touchY = (Gdx.graphics.getHeight()-screenY)*Constants.GAME_HEIGHT/Gdx.graphics.getHeight();
+		touchX = screenX * Constants.GAME_WIDTH / Gdx.graphics.getWidth();
+		touchY = (Gdx.graphics.getHeight() - screenY) * Constants.GAME_HEIGHT
+				/ Gdx.graphics.getHeight();
 		touched = true;
 		return false;
 	}
@@ -54,9 +54,10 @@ public class InputHandler implements InputProcessor{
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		
-		mousePosX = screenX*Constants.GAME_WIDTH/Gdx.graphics.getWidth();
-		mousePosY = (Gdx.graphics.getHeight()-screenY)*Constants.GAME_HEIGHT/Gdx.graphics.getHeight();
+
+		mousePosX = screenX * Constants.GAME_WIDTH / Gdx.graphics.getWidth();
+		mousePosY = (Gdx.graphics.getHeight() - screenY)
+				* Constants.GAME_HEIGHT / Gdx.graphics.getHeight();
 		return false;
 	}
 

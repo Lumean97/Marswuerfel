@@ -1,16 +1,10 @@
 package com.marswuerfel.game.Screens;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.marswuerfel.game.Marswuerfel;
 import com.marswuerfel.game.Player;
 import com.marswuerfel.game.objects.Dice;
 import com.marswuerfel.game.objects.DiceCard;
@@ -27,8 +21,6 @@ public class LifeCycle implements Screen {
 	static Texture cowDisplay;
 	static Texture humanDisplay;
 	static Texture rules;
-
-	
 
 	static DiceCard cow;
 	static DiceCard human;
@@ -49,7 +41,7 @@ public class LifeCycle implements Screen {
 	private boolean ruleOn = false;
 
 	public LifeCycle(Player player) {
-		this.player = player;
+		LifeCycle.player = player;
 		show();
 	}
 
@@ -85,7 +77,6 @@ public class LifeCycle implements Screen {
 				.internal("sounds/clickDown.mp3"));
 		clickUp = Gdx.audio.newSound(Gdx.files.internal("sounds/clickUp.mp3"));
 
-		
 		cardTextures = new String[] { "gfx/questionCard.png",
 				"gfx/ChickenCard.png", "gfx/HumanCard.png", "gfx/CowCard.png",
 				"gfx/TankCard.png", "gfx/AlienCard.png", "gfx/AlienCard.png" };
@@ -126,20 +117,23 @@ public class LifeCycle implements Screen {
 			Dice.swtichRunning();
 		}
 
-		if (!startButton.isPressed() && startButton.isPressedState() && Dice.chosen) {
+		if (!startButton.isPressed() && startButton.isPressedState()
+				&& Dice.chosen) {
 			startButton.setPressed(false);
 			startButton.setUpTexture();
 			clickUp.play();
 		}
-		
+
 		if (help.isPressed() && !help.isPressedState()) {
 			help.setPressed(true);
 			help.setDownTexture();
 
 			clickDown.play();
-			if(!ruleOn)ruleOn = true;
-			else ruleOn = false;
-			
+			if (!ruleOn)
+				ruleOn = true;
+			else
+				ruleOn = false;
+
 		}
 
 		if (!help.isPressed() && help.isPressedState()) {
@@ -147,8 +141,7 @@ public class LifeCycle implements Screen {
 			help.setUpTexture();
 			clickUp.play();
 		}
-		
-		System.out.println(ruleOn);
+
 		for (Dice dice : dices) {
 			if (Dice.running && dice.isSpinable()) {
 
@@ -198,14 +191,12 @@ public class LifeCycle implements Screen {
 					break;
 				case 6:
 					aliens++;
-					System.out.println("Alienator!");
 					break;
 				}
 			}
 			if (tanks > aliens)
-				
+
 				player.loose();
-			System.out.println(tanks +" " +  aliens + "T");
 			if (chicken && human && cow)
 				givenPoints += 3;
 			stopped = true;
@@ -213,21 +204,29 @@ public class LifeCycle implements Screen {
 		boolean cowAviable = true;
 		boolean chickenAviable = true;
 		boolean humanAviable = true;
-		if(!Dice.running){
-		if(cow.isPressedState())cowAviable = false;
-		if(chicken.isPressedState())chickenAviable = false;
-		if(human.isPressedState())humanAviable = false;
-		Dice.chosen = true;
-		for(Dice d : dices){
-			if(d.isSpinable()){
-			if(d.getIndexID()==Dice.COW && cowAviable)Dice.chosen = false;
-			if(d.getIndexID()==Dice.CHICKEN && chickenAviable)Dice.chosen = false;
-			if(d.getIndexID()==Dice.HUMAN && humanAviable)Dice.chosen = false;
-			if(d.getIndexID()==Dice.ALIEN || d.getIndexID()==6)Dice.chosen = false;
+		if (!Dice.running) {
+			if (cow.isPressedState())
+				cowAviable = false;
+			if (chicken.isPressedState())
+				chickenAviable = false;
+			if (human.isPressedState())
+				humanAviable = false;
+			Dice.chosen = true;
+			for (Dice d : dices) {
+				if (d.isSpinable()) {
+					if (d.getIndexID() == Dice.COW && cowAviable)
+						Dice.chosen = false;
+					if (d.getIndexID() == Dice.CHICKEN && chickenAviable)
+						Dice.chosen = false;
+					if (d.getIndexID() == Dice.HUMAN && humanAviable)
+						Dice.chosen = false;
+					if (d.getIndexID() == Dice.ALIEN || d.getIndexID() == 6)
+						Dice.chosen = false;
+				}
 			}
-			}
-	}
-		if(tank.getCount()>=7)player.loose();
+		}
+		if (tank.getCount() >= 7)
+			player.loose();
 	}
 
 	@Override
@@ -243,9 +242,10 @@ public class LifeCycle implements Screen {
 		Constants.GAME.batch.draw(chickenDisplay, 60, 410);
 		Constants.GAME.batch.draw(cowDisplay, 280, 410);
 		Constants.GAME.batch.draw(humanDisplay, 500, 410);
-		Constants.GAME.batch.draw(cow, cow.getX(), cow.getY(), cow.getOriginX(),
-				cow.getOriginY(), cow.getWidth(), cow.getHeight(),
-				cow.getScaleX(), cow.getScaleY(), cow.getRotation());
+		Constants.GAME.batch.draw(cow, cow.getX(), cow.getY(),
+				cow.getOriginX(), cow.getOriginY(), cow.getWidth(),
+				cow.getHeight(), cow.getScaleX(), cow.getScaleY(),
+				cow.getRotation());
 		Constants.GAME.batch.draw(human, human.getX(), human.getY(),
 				human.getOriginX(), human.getOriginY(), human.getWidth(),
 				human.getHeight(), human.getScaleX(), human.getScaleY(),
@@ -261,14 +261,25 @@ public class LifeCycle implements Screen {
 		Constants.GAME.batch.draw(startButton, startButton.getX(),
 				startButton.getY());
 		Constants.GAME.batch.draw(help, help.getX(), help.getY());
-		
-		Constants.GAME.font.draw(Constants.GAME.batch, "" + chicken.getCount(), 130, 455);
-		Constants.GAME.font.draw(Constants.GAME.batch, "" + cow.getCount(), 350, 455);
-		Constants.GAME.font.draw(Constants.GAME.batch, "" + human.getCount(), 570, 455);
-		Constants.GAME.font.draw(Constants.GAME.batch, "" + tank.getCount(), 667, 400);
-		Constants.GAME.font.draw(Constants.GAME.batch, "" + alien.getCount(), 742, 400);
+
+		Constants.GAME.font.draw(Constants.GAME.batch, "" + chicken.getCount(),
+				130, 455);
+		Constants.GAME.font.draw(Constants.GAME.batch, "" + cow.getCount(),
+				350, 455);
+		Constants.GAME.font.draw(Constants.GAME.batch, "" + human.getCount(),
+				570, 455);
+		Constants.GAME.font.draw(Constants.GAME.batch, "" + tank.getCount(),
+				667, 400);
+		Constants.GAME.font.draw(Constants.GAME.batch, "" + alien.getCount(),
+				742, 400);
 		Constants.GAME.font.setColor(1, 1, 1, 1);
-		Constants.GAME.font.draw(Constants.GAME.batch, "Player " + (Constants.GAME.playerIndex+1) + ": " + (Constants.GAME.getPlayers()[Constants.GAME.playerIndex].getPoints()) + " Punkte", 10, 45);
+		Constants.GAME.font
+				.draw(Constants.GAME.batch,
+						"Player "
+								+ (Constants.GAME.playerIndex + 1)
+								+ ": "
+								+ (Constants.GAME.getPlayers()[Constants.GAME.playerIndex]
+										.getPoints()) + " Punkte", 10, 45);
 		Constants.GAME.font.setColor(0, 0, 0, 1);
 		for (Dice dice : dices) {
 			Constants.GAME.batch.draw(dice, dice.getX(), dice.getY());
@@ -280,19 +291,20 @@ public class LifeCycle implements Screen {
 
 			}
 		}
-		if(ruleOn){
+		if (ruleOn) {
 			Constants.GAME.batch.draw(rules, 65, 70);
 		}
 		Constants.GAME.batch.end();
-		if(stopped)player.stop(givenPoints);
+		if (stopped)
+			player.stop(givenPoints);
 	}
 
 	@Override
 	public void dispose() {
-		
+
 	}
-	
-	public static void disposeAll(){
+
+	public static void disposeAll() {
 		background.dispose();
 		middle.dispose();
 		tankDisplay.dispose();
@@ -300,6 +312,7 @@ public class LifeCycle implements Screen {
 		cowDisplay.dispose();
 		chickenDisplay.dispose();
 		humanDisplay.dispose();
+		rules.dispose();
 		cow.dispose();
 		human.dispose();
 		alien.dispose();
@@ -308,37 +321,31 @@ public class LifeCycle implements Screen {
 		clickDown.dispose();
 		clickUp.dispose();
 		startButton.dispose();
+		help.dispose();
 		for (Dice dice : dices) {
-			dice.getTexture().dispose();
+			dice.dispose();
 		}
+
 	}
-
-
-
-	
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 }

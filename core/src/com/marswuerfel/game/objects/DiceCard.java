@@ -50,32 +50,32 @@ public class DiceCard extends Button {
 			return;
 		checkPressed();
 		if (isPressedState() && !Dice.running) {
-			
+
 			boolean changed = false;
-			for(Dice dice : dices){
-				if(dice.getIndexID()==indexID || (indexID==5 && dice.getIndexID()==6)){
-					if(dice.isSpinable()){
-						setCount(count+1);
+			for (Dice dice : dices) {
+				if (dice.getIndexID() == indexID
+						|| (indexID == 5 && dice.getIndexID() == 6)) {
+					if (dice.isSpinable()) {
+						setCount(count + 1);
 					}
-					
+
 					dice.setPressed(true);
 					dice.setSpinable(false);
 					dice.setFinalTexture(dice.getTexture());
-					
+
 					changed = true;
 				}
 			}
-			if(changed){
-			setDownTexture();
-			setScale(1.0f, 0.9f);
-			Dice.running = true;
-			Dice.chosen = true;
-			sound.play();
-			}else{
+			if (changed) {
+				setDownTexture();
+				setScale(1.0f, 0.9f);
+				Dice.running = true;
+				Dice.chosen = true;
+				sound.play();
+			} else {
 				setPressed(false);
 			}
-			
-			
+
 		}
 	}
 
@@ -96,7 +96,5 @@ public class DiceCard extends Button {
 		upTexture.dispose();
 		downTexture.dispose();
 	}
-	
-	
 
 }
