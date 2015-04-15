@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.marswuerfel.game.objects.Dice;
 import com.marswuerfel.game.objects.DiceCard;
 import com.marswuerfel.game.utils.Constants;
@@ -233,6 +232,9 @@ public class LifeCycle extends Game{
 		middle.dispose();
 		tankDisplay.dispose();
 		alienDisplay.dispose();
+		cowDisplay.dispose();
+		chickenDisplay.dispose();
+		humanDisplay.dispose();
 		font.dispose();
 		cow.dispose();
 		human.dispose();
