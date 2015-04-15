@@ -8,7 +8,7 @@ import com.marswuerfel.game.utils.Constants;
 
 public class GameOver implements Screen{
 	private String wonPlayers = "";
-	private String noPlayer = "No Player won! :(";
+	private String noPlayer = "Keiner hat gewonnen! :(";
 	private Button playAgain;
 	@Override
 	public void show() {
@@ -24,7 +24,7 @@ public class GameOver implements Screen{
 	
 	private void update(){
 		if(playAgain.isPressed()){
-			Gdx.app.getApplicationListener().create();
+			Constants.GAME.restart();
 		}
 	}
 	
@@ -38,11 +38,12 @@ public class GameOver implements Screen{
 		Constants.GAME.batch.begin();
 		Constants.GAME.batch.draw(playAgain, playAgain.getX(), playAgain.getY());
 		Constants.GAME.font.draw(Constants.GAME.batch, "Game Over!", 150, 300);
+		Constants.GAME.font.setScale(0.5f);
 		if(wonPlayers.equals("")){
 		Constants.GAME.font.draw(Constants.GAME.batch, noPlayer, 50, 200);
 		}else{
-			Constants.GAME.font.setScale(0.5f);
-			Constants.GAME.font.drawWrapped(Constants.GAME.batch, "Player(s)" + wonPlayers + " won!", 10, 200, 750);
+			
+			Constants.GAME.font.drawWrapped(Constants.GAME.batch, "Spieler (" + wonPlayers + ") haben gewonnen!", 10, 200, 750);
 
 		}
 		Constants.GAME.batch.end();

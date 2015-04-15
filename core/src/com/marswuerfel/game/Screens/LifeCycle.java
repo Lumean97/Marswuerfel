@@ -26,6 +26,7 @@ public class LifeCycle implements Screen {
 	static Texture chickenDisplay;
 	static Texture cowDisplay;
 	static Texture humanDisplay;
+	static Texture rules;
 
 	
 
@@ -35,6 +36,7 @@ public class LifeCycle implements Screen {
 	static DiceCard chicken;
 	static DiceCard tank;
 	static DiceCard startButton;
+	static DiceCard help;
 
 	static Sound clickDown;
 	static Sound clickUp;
@@ -44,6 +46,7 @@ public class LifeCycle implements Screen {
 	private String[] cardTextures;
 	private boolean stopped = false;
 	private int givenPoints = 0;
+	private boolean ruleOn = false;
 
 	public LifeCycle(Player player) {
 		this.player = player;
@@ -52,8 +55,7 @@ public class LifeCycle implements Screen {
 
 	@Override
 	public void show() {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		Gdx.input.setInputProcessor(Constants.IN);
+		rules = new Texture("gfx/rules.png");
 		middle = new Texture("gfx/middleteil.png");
 		background = new Texture("gfx/background.jpg");
 		tankDisplay = new Texture("gfx/TankDisplay.png");
@@ -76,6 +78,7 @@ public class LifeCycle implements Screen {
 		chicken.setOrigin(0, 0);
 		startButton = new DiceCard("gfx/StartUp.png", "gfx/StartDown.png", 662,
 				40, -1);
+		help = new DiceCard("gfx/helpUp.png", "gfx/helpDown.png", 590, 0, -1);
 		startButton.setOrigin(0, 0);
 
 		clickDown = Gdx.audio.newSound(Gdx.files
@@ -128,7 +131,24 @@ public class LifeCycle implements Screen {
 			startButton.setUpTexture();
 			clickUp.play();
 		}
+		
+		if (help.isPressed() && !help.isPressedState()) {
+			help.setPressed(true);
+			help.setDownTexture();
 
+			clickDown.play();
+			if(!ruleOn)ruleOn = true;
+			else ruleOn = false;
+			
+		}
+
+		if (!help.isPressed() && help.isPressedState()) {
+			help.setPressed(false);
+			help.setUpTexture();
+			clickUp.play();
+		}
+		
+		System.out.println(ruleOn);
 		for (Dice dice : dices) {
 			if (Dice.running && dice.isSpinable()) {
 
@@ -207,7 +227,7 @@ public class LifeCycle implements Screen {
 			}
 			}
 	}
-
+		if(tank.getCount()>=7)player.loose();
 	}
 
 	@Override
@@ -240,6 +260,8 @@ public class LifeCycle implements Screen {
 				chicken.getRotation());
 		Constants.GAME.batch.draw(startButton, startButton.getX(),
 				startButton.getY());
+		Constants.GAME.batch.draw(help, help.getX(), help.getY());
+		
 		Constants.GAME.font.draw(Constants.GAME.batch, "" + chicken.getCount(), 130, 455);
 		Constants.GAME.font.draw(Constants.GAME.batch, "" + cow.getCount(), 350, 455);
 		Constants.GAME.font.draw(Constants.GAME.batch, "" + human.getCount(), 570, 455);
@@ -257,6 +279,9 @@ public class LifeCycle implements Screen {
 						dice.getY());
 
 			}
+		}
+		if(ruleOn){
+			Constants.GAME.batch.draw(rules, 65, 70);
 		}
 		Constants.GAME.batch.end();
 		if(stopped)player.stop(givenPoints);

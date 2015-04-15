@@ -7,14 +7,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.marswuerfel.game.Screens.GameOver;
 import com.marswuerfel.game.Screens.LifeCycle;
+import com.marswuerfel.game.Screens.StartScreen;
 import com.marswuerfel.game.utils.Constants;
 
 public class GameHandler extends Game{
 	public BitmapFont font;
 	public SpriteBatch batch;
-	public int maxPlayers = 25;
-	public int lastIndex = 23;
-	public int playerIndex = 23;
+	public int maxPlayers = 2;
+	public int lastIndex = 0;
+	public int playerIndex = 0;
 	public boolean gameOver = false;
 	private boolean finalRound = false;
 	Player[] players;
@@ -30,11 +31,12 @@ public class GameHandler extends Game{
 		
 		batch = new SpriteBatch();
 		
-		 players = new Player[Constants.GAME.maxPlayers];
-		 for(int i = 0; i<players.length; i++){
-			 players[i] = new Player();
-		 }
-		 players[playerIndex].start();
+		 
+		 setScreen(new StartScreen());
+	}
+	
+	public void restart(){
+		setScreen(new StartScreen());
 	}
 	
 	@Override
@@ -47,7 +49,16 @@ public class GameHandler extends Game{
 				if(finalRound)gameOver();
 				System.out.println("checked, again");
 				playerIndex = 0;
-				
+				int leftPlayers = 0;
+				for(Player p : players){
+					if(!p.lost)leftPlayers++;
+				}
+				if(leftPlayers<=1){
+					for(Player p : players){
+						if(!p.lost)p.setWon(true);
+					}
+					gameOver();
+				}
 			}
 			System.out.println(playerIndex);
 			checkWinner();
@@ -97,5 +108,13 @@ public class GameHandler extends Game{
 	public Player[] getPlayers(){
 		return players;
 	}
-
+	
+	public void startGame(){
+		players = new Player[Constants.GAME.maxPlayers];
+		 System.out.println(players.length);
+		 for(int i = 0; i<players.length; i++){
+			 players[i] = new Player();
+		 }
+		players[playerIndex].start();
+	}
 }

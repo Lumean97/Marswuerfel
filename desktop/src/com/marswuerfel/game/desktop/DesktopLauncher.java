@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.width = 800;
 		config.height = 480;
 		config.addIcon("gfx/desktop_icon.png", FileType.Internal);
+		config.title = "Marswürfel";
 		new LwjglApplication(new Marswuerfel(), config);
 	}
 }

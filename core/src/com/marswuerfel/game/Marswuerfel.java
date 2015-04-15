@@ -22,6 +22,9 @@ public class Marswuerfel extends ApplicationAdapter {
 	
 	@Override
 	public void create() {
+		
+		Gdx.app.setLogLevel(Application.LOG_DEBUG);
+		Gdx.input.setInputProcessor(Constants.IN);
 	Constants.GAME.create();
 	}
 
