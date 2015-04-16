@@ -28,6 +28,7 @@ public class Player {
 	}
 
 	public void stop(int p) {
+		System.out.println("s");
 		points += p;
 		Constants.GAME.playerIndex++;
 		game.dispose();

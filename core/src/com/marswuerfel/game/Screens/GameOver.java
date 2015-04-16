@@ -74,6 +74,7 @@ public class GameOver implements Screen {
 	@Override
 	public void dispose() {
 		playAgain.dispose();
+		LifeCycle.disposeAll();
 	}
 
 }

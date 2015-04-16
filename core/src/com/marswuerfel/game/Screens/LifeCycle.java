@@ -33,7 +33,7 @@ public class LifeCycle implements Screen {
 	static Sound clickDown;
 	static Sound clickUp;
 
-	static Dice[] dices;
+	Dice[] dices;
 
 	private String[] cardTextures;
 	private boolean stopped = false;
@@ -164,6 +164,7 @@ public class LifeCycle implements Screen {
 				i++;
 		}
 		if (i >= 13) {
+			System.out.println("t");
 			boolean chicken = false;
 			boolean human = false;
 			boolean cow = false;
@@ -273,13 +274,14 @@ public class LifeCycle implements Screen {
 		Constants.GAME.font.draw(Constants.GAME.batch, "" + alien.getCount(),
 				742, 400);
 		Constants.GAME.font.setColor(1, 1, 1, 1);
-		Constants.GAME.font
-				.draw(Constants.GAME.batch,
-						"Player "
-								+ (Constants.GAME.playerIndex + 1)
-								+ ": "
-								+ (Constants.GAME.getPlayers()[Constants.GAME.playerIndex]
-										.getPoints()) + " Punkte", 10, 45);
+			Constants.GAME.font
+					.draw(Constants.GAME.batch,
+							"Player "
+									+ (Constants.GAME.playerIndex + 1)
+									+ ": "
+									+ (Constants.GAME.getPlayers()[Constants.GAME.playerIndex]
+											.getPoints()) + " Punkte", 10, 45);
+		
 		Constants.GAME.font.setColor(0, 0, 0, 1);
 		for (Dice dice : dices) {
 			Constants.GAME.batch.draw(dice, dice.getX(), dice.getY());
@@ -301,7 +303,9 @@ public class LifeCycle implements Screen {
 
 	@Override
 	public void dispose() {
-
+		for(Dice d : dices){
+			d.setSpinable(true);
+		}
 	}
 
 	public static void disposeAll() {
@@ -322,9 +326,7 @@ public class LifeCycle implements Screen {
 		clickUp.dispose();
 		startButton.dispose();
 		help.dispose();
-		for (Dice dice : dices) {
-			dice.dispose();
-		}
+		
 
 	}
 

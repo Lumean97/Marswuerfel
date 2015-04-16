@@ -41,26 +41,28 @@ public class GameHandler extends Game {
 
 	@Override
 	public void render() {
+		if (playerIndex > maxPlayers - 1) {
+			if (finalRound)
+				gameOver();
 
-		if (playerIndex > lastIndex && !gameOver) {
-			if (playerIndex > maxPlayers - 1) {
-				if (finalRound)
-					gameOver();
-
-				playerIndex = 0;
-				int leftPlayers = 0;
+			playerIndex = 0;
+			int leftPlayers = 0;
+			lastIndex = playerIndex;
+			for (Player p : players) {
+				if (!p.lost)
+					leftPlayers++;
+			}
+			System.out.println(leftPlayers);
+			if (leftPlayers <= 1) {
 				for (Player p : players) {
 					if (!p.lost)
-						leftPlayers++;
+						p.setWon(true);
 				}
-				if (leftPlayers <= 1) {
-					for (Player p : players) {
-						if (!p.lost)
-							p.setWon(true);
-					}
-					gameOver();
-				}
+				gameOver();
 			}
+		}
+		if (playerIndex > lastIndex && !gameOver) {
+			System.out.println("3434");
 
 			checkWinner();
 			lastIndex = playerIndex;
@@ -103,7 +105,6 @@ public class GameHandler extends Game {
 	}
 
 	public void gameOver() {
-		LifeCycle.disposeAll();
 		getScreen().dispose();
 		setScreen(new GameOver());
 		gameOver = true;
